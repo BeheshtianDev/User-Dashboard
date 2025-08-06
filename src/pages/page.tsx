@@ -1,0 +1,55 @@
+// === src/pages/index.tsx ===
+import { useState } from "react";
+import { useRouter } from "next/router";
+import "tailwindcss";
+export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const login = () => {
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+    const user = users.find(
+      (u: any) => u.username === username && u.password === password
+    );
+    if (user) {
+      localStorage.setItem("token", "fake-jwt-token");
+      router.push("/dashboard");
+    } else {
+      alert("Invalid username or password");
+    }
+  };
+
+  return (
+    <div
+      className="min-h-screen flex flex-col gap-10
+     items-center justify-center bg-black/95 text-white"
+    >
+      <h1 className="text-3xl mb-4">Login</h1>
+      <input
+        className=" max-w-[350px]  w-[95%] py-3 bg-black rounded  hover:px-5  focus:px-5 pl-36 text-white/70  transition-all focus:shadow-white/20  focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30  shadow-black"
+        placeholder="username"
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <input
+        className=" max-w-[350px]  w-[95%] py-3 bg-black rounded  hover:px-5  focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30  shadow-black"
+        type="password"
+        placeholder="password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      <button className="btn" onClick={login}>
+        <span className="btn-text-one">Login</span>
+        <span className="btn-text-two">Dashbaord!</span>
+      </button>
+      <button
+        className="mt-2  relative group"
+        onClick={() => router.push("/signup")}
+      >
+        No account? Sign up
+        <span className="absolute left-0 -bottom-0.5 h-[1px] w-full origin-left scale-x-0 bg-white transition-transform duration-500 group-hover:scale-x-100 group-hover:origin-left" />
+      </button>
+    </div>
+  );
+}
