@@ -7,12 +7,18 @@ const Page = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  type User = {
+    username: string;
+    password: string;
+  };
+
   const login = () => {
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
 
     const user = users.find(
-      (u: any) => u.username === username && u.password === password
+      (u) => u.username === username && u.password === password
     );
+
     if (user) {
       localStorage.setItem("token", "fake-jwt-token");
       router.push("/dashboard");
@@ -20,6 +26,7 @@ const Page = () => {
       alert("Invalid username or password");
     }
   };
+
   return (
     <div
       className="min-h-screen flex flex-col gap-10

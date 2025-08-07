@@ -6,11 +6,14 @@ const Page = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-
+  type User = {
+    username: string;
+    password: string;
+  };
   const signup = () => {
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
 
-    const userExists = users.find((u: any) => u.username === username);
+    const userExists = users.find((u: User) => u.username === username);
     if (userExists) {
       alert("User already exists");
       return;
