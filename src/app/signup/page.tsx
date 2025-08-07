@@ -28,21 +28,26 @@ const Page = () => {
     router.push("/");
   };
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-black/95 gap-10 text-white">
-      <h1 className="text-3xl mb-4">Sign Up</h1>
+    <div className="h-screen w-full overflow-hidden flex flex-col items-center justify-center bg-black/95 gap-10 text-white relative">
+      <span className="w-full h-[100vw]  -right-1/4 -bottom-3/4  bg-stone-900   rounded-full absolute"></span>
+
+      <h1 className="text-3xl mb-4 z-10">Sign Up</h1>
       <input
-        className=" max-w-[350px]  w-[95%] py-3 bg-black rounded  hover:px-5  focus:px-5 pl-36 text-white/70  transition-all focus:shadow-white/20  focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30  shadow-black"
+        className=" max-w-[350px] z-10 w-[95%] py-3 bg-black rounded  hover:px-5  focus:px-5 pl-36 text-white/70  transition-all focus:shadow-white/20  focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30  shadow-black"
         placeholder="username"
         onChange={(e) => setUsername(e.target.value)}
       />
       <input
-        className=" max-w-[350px]  w-[95%] py-3 bg-black rounded  hover:px-5  focus:px-5 pl-36 text-white/70  transition-all focus:shadow-white/20  focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30  shadow-black"
+        className=" max-w-[350px] z-10 w-[95%] py-3 bg-black rounded  hover:px-5  focus:px-5 pl-36 text-white/70  transition-all focus:shadow-white/20  focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30  shadow-black"
         type="password"
         placeholder="password"
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button className="btn" onClick={signup}>
+      <button
+        className="btn   border z-10 border-black/80 hover:!shadow-white/30 hover:!shadow-[0_0_20px_rgba(0,0,0,0.5)] transition-all duration-500 hover:border-white/30"
+        onClick={signup}
+      >
         <span className="btn-text-one">Sign Up</span>
         <span className="btn-text-two">Login !</span>
       </button>

@@ -13,7 +13,7 @@ button {
   background: linear-gradient(to top, #19191a, #363636, #4e4e4e);
   color: #fff;
   border-radius: 5px;
-  border: none;
+
   outline: none;
   cursor: pointer;
   position: relative;
