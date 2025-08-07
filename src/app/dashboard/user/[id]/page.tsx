@@ -38,7 +38,6 @@ const itemVariants = {
   exit: { opacity: 0, x: 20, transition: { duration: 0.2 } },
 };
 export default function UserDetailPage({ params }: Props) {
-  const user = users.find((u) => u.id === Number(params.id));
   const [trainingPlan, setTrainingPlan] = useState<TrainingDay[]>([
     {
       day: 1,
@@ -47,15 +46,15 @@ export default function UserDetailPage({ params }: Props) {
   ]);
   const [trainingPlanEditMode, setTrainingPlanEditMode] = useState<boolean[]>([
     true,
-  ]); // <--- change here
+  ]);
 
   const [nutritionPlan, setNutritionPlan] = useState<NutritionItem[]>([
     { meal: "", time: "", notes: "" },
   ]);
-  const [nutritionEditMode, setNutritionEditMode] = useState<boolean[]>([true]); // <--- change here
-  if (!user) return notFound();
+  const [nutritionEditMode, setNutritionEditMode] = useState<boolean[]>([true]);
 
-  const storageKey = `userPlans_${user.id}`;
+  // Safe to define before finding the user
+  const storageKey = `userPlans_${params.id}`;
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -76,6 +75,10 @@ export default function UserDetailPage({ params }: Props) {
     }
   }, [storageKey]);
 
+  // Now it's safe to check user
+  const user = users.find((u) => u.id === Number(params.id));
+  if (!user) return notFound();
+
   // Save data to localStorage
   const savePlans = () => {
     if (typeof window === "undefined") return;
@@ -90,7 +93,6 @@ export default function UserDetailPage({ params }: Props) {
 
   // --- Training Plan Handlers ---
 
-  // Add day
   const addDay = () => {
     setTrainingPlan((prev) => [
       ...prev,
@@ -99,27 +101,23 @@ export default function UserDetailPage({ params }: Props) {
         exercises: [{ muscle: "", movement: "", sets: "", reps: "" }],
       },
     ]);
-    setTrainingPlanEditMode((prev) => [...prev, true]); // new day starts in edit mode
+    setTrainingPlanEditMode((prev) => [...prev, true]);
   };
 
-  // Delete day
   const deleteDay = (dayIndex: number) => {
     setTrainingPlan((prev) => {
       const updated = prev.filter((_, i) => i !== dayIndex);
-      // Reassign day numbers
       return updated.map((day, i) => ({ ...day, day: i + 1 }));
     });
     setTrainingPlanEditMode((prev) => prev.filter((_, i) => i !== dayIndex));
   };
 
-  // Toggle edit mode for a day
   const toggleEditDay = (dayIndex: number) => {
     setTrainingPlanEditMode((prev) =>
       prev.map((edit, i) => (i === dayIndex ? !edit : edit))
     );
   };
 
-  // Add exercise to a day
   const addExercise = (dayIndex: number) => {
     const updated = [...trainingPlan];
     updated[dayIndex].exercises.push({
@@ -129,13 +127,11 @@ export default function UserDetailPage({ params }: Props) {
       reps: "",
     });
     setTrainingPlan(updated);
-    // Also force edit mode on that day
     setTrainingPlanEditMode((prev) =>
       prev.map((edit, i) => (i === dayIndex ? true : edit))
     );
   };
 
-  // Delete exercise from a day
   const deleteExercise = (dayIndex: number, exIndex: number) => {
     const updated = [...trainingPlan];
     updated[dayIndex].exercises = updated[dayIndex].exercises.filter(
@@ -144,7 +140,6 @@ export default function UserDetailPage({ params }: Props) {
     setTrainingPlan(updated);
   };
 
-  // Update exercise field
   const updateExercise = (
     dayIndex: number,
     exIndex: number,
@@ -158,26 +153,22 @@ export default function UserDetailPage({ params }: Props) {
 
   // --- Nutrition Plan Handlers ---
 
-  // Add meal
   const addMeal = () => {
     setNutritionPlan((prev) => [...prev, { meal: "", time: "", notes: "" }]);
-    setNutritionEditMode((prev) => [...prev, true]); // new meal starts editable
+    setNutritionEditMode((prev) => [...prev, true]);
   };
 
-  // Delete meal
   const deleteMeal = (index: number) => {
     setNutritionPlan((prev) => prev.filter((_, i) => i !== index));
     setNutritionEditMode((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Toggle meal edit mode
   const toggleEditMeal = (index: number) => {
     setNutritionEditMode((prev) =>
       prev.map((edit, i) => (i === index ? !edit : edit))
     );
   };
 
-  // Update meal field
   const updateMeal = (
     index: number,
     field: keyof NutritionItem,
