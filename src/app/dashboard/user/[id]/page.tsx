@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { notFound } from "next/navigation";
 import { users } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { useParams } from "next/navigation"; // ✅ NEW IMPORT
 interface Exercise {
   muscle: string;
   movement: string;
@@ -33,14 +33,17 @@ const itemVariants = {
   visible: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: 20, transition: { duration: 0.2 } },
 };
+
 type Props = {
   params: {
     id: string;
   };
 };
 
-export default function Page({ params }: Props) {
+export default function Page() {
+  const params = useParams();
   const userId = Number(params.id);
+
   const [trainingPlan, setTrainingPlan] = useState<TrainingDay[]>([
     {
       day: 1,
@@ -56,10 +59,8 @@ export default function Page({ params }: Props) {
   ]);
   const [nutritionEditMode, setNutritionEditMode] = useState<boolean[]>([true]);
 
-  // Safe to define before finding the user
-  const storageKey = `userPlans_${params.id}`;
+  const storageKey = `userPlans_${userId}`;
 
-  // Load from localStorage on mount
   useEffect(() => {
     if (typeof window === "undefined") return;
     const saved = localStorage.getItem(storageKey);
@@ -73,29 +74,25 @@ export default function Page({ params }: Props) {
           setNutritionEditMode(parsed.nutritionPlan.map(() => false));
         }
       } catch {
-        // ignore parse errors
+        // invalid JSON
       }
     }
   }, [storageKey]);
 
-  // Now it's safe to check user
-  const user = users.find((u) => u.id === Number(params.id));
+  const user = users.find((u) => u.id === userId);
   if (!user) return notFound();
 
-  // Save data to localStorage
   const savePlans = () => {
     if (typeof window === "undefined") return;
     localStorage.setItem(
       storageKey,
       JSON.stringify({ trainingPlan, nutritionPlan })
     );
-    // Reset all edit modes
     setTrainingPlanEditMode(trainingPlan.map(() => false));
     setNutritionEditMode(nutritionPlan.map(() => false));
   };
 
   // --- Training Plan Handlers ---
-
   const addDay = () => {
     setTrainingPlan((prev) => [
       ...prev,
