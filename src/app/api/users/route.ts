@@ -1,36 +1,34 @@
-// === src/pages/api/users.ts ===
 import { users } from "@/lib/data";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "GET") {
-    return res.status(200).json(users);
+export async function GET() {
+  return NextResponse.json(users);
+}
+
+export async function POST(req: NextRequest) {
+  const { name, email } = await req.json();
+  const id = Date.now();
+  users.push({ id, name, email });
+  return NextResponse.json({ message: "User added" }, { status: 201 });
+}
+
+export async function PUT(req: NextRequest) {
+  const { id, name, email } = await req.json();
+  const user = users.find((u) => u.id === id);
+  if (!user) {
+    return NextResponse.json({ message: "User not found" }, { status: 404 });
   }
+  user.name = name;
+  user.email = email;
+  return NextResponse.json({ message: "User updated" });
+}
 
-  if (req.method === "POST") {
-    const { name, email } = req.body;
-    const id = Date.now();
-    users.push({ id, name, email });
-    return res.status(201).json({ message: "User added" });
+export async function DELETE(req: NextRequest) {
+  const { id } = await req.json();
+  const index = users.findIndex((u) => u.id === id);
+  if (index === -1) {
+    return NextResponse.json({ message: "User not found" }, { status: 404 });
   }
-
-  if (req.method === "PUT") {
-    const { id, name, email } = req.body;
-    const user = users.find((u) => u.id === id);
-    if (!user) return res.status(404).json({ message: "User not found" });
-    user.name = name;
-    user.email = email;
-    return res.status(200).json({ message: "User updated" });
-  }
-
-  if (req.method === "DELETE") {
-    const { id } = req.body;
-    const index = users.findIndex((u) => u.id === id);
-    if (index === -1)
-      return res.status(404).json({ message: "User not found" });
-    users.splice(index, 1);
-    return res.status(200).json({ message: "User deleted" });
-  }
-
-  return res.status(405).end();
+  users.splice(index, 1);
+  return NextResponse.json({ message: "User deleted" });
 }

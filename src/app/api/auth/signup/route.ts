@@ -1,34 +1,19 @@
-import { users } from "@/lib/data";
+import { auth } from "@/lib/data";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  return NextResponse.json(users);
-}
-
 export async function POST(req: NextRequest) {
-  const { name, email } = await req.json();
-  const id = Date.now();
-  users.push({ id, name, email });
-  return NextResponse.json({ message: "User added" }, { status: 201 });
-}
+  const body = await req.json();
+  const { username, password } = body;
 
-export async function PUT(req: NextRequest) {
-  const { id, name, email } = await req.json();
-  const user = users.find((u) => u.id === id);
-  if (!user) {
-    return NextResponse.json({ message: "User not found" }, { status: 404 });
+  if (!username || !password) {
+    return NextResponse.json({ message: "Missing fields" }, { status: 400 });
   }
-  user.name = name;
-  user.email = email;
-  return NextResponse.json({ message: "User updated" });
-}
 
-export async function DELETE(req: NextRequest) {
-  const { id } = await req.json();
-  const index = users.findIndex((u) => u.id === id);
-  if (index === -1) {
-    return NextResponse.json({ message: "User not found" }, { status: 404 });
+  const exists = auth.find((u) => u.username === username);
+  if (exists) {
+    return NextResponse.json({ message: "User exists" }, { status: 400 });
   }
-  users.splice(index, 1);
-  return NextResponse.json({ message: "User deleted" });
+
+  auth.push({ username, password });
+  return NextResponse.json({ message: "User created" }, { status: 200 });
 }
