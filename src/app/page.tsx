@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-const page = () => {
+const Page = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -53,4 +53,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -1,5 +1,5 @@
 "use client";
-import React from 'react'
+import React from "react";
 // pages/dashboard.tsx
 
 import { useEffect, useState } from "react";
@@ -12,59 +12,59 @@ interface User {
   email: string;
 }
 
-const page = () => {
-     const router = useRouter();
-      const [userList, setUserList] = useState<User[]>([]);
-      const [name, setName] = useState("");
-      const [email, setEmail] = useState("");
-      const [editingId, setEditingId] = useState<number | null>(null);
-      const logout = () => {
-        localStorage.removeItem("token");
-        router.push("/");
-      };
-      useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token !== TOKEN) {
-          router.push("/");
-        } else {
-          setUserList([...users]);
-        }
-      }, []);
-    
-      const addUser = () => {
-        if (!name || !email) return;
-        const newUser = { id: Date.now(), name, email };
-        setUserList((prev) => [...prev, newUser]);
-        users.push(newUser);
-        setName("");
-        setEmail("");
-      };
-    
-      const deleteUser = (id: number) => {
-        const filtered = userList.filter((user) => user.id !== id);
-        setUserList(filtered);
-        const index = users.findIndex((u) => u.id === id);
-        if (index !== -1) users.splice(index, 1);
-      };
-    
-      const startEdit = (user: User) => {
-        setEditingId(user.id);
-        setName(user.name);
-        setEmail(user.email);
-      };
-    
-      const updateUser = () => {
-        if (!name || !email || editingId === null) return;
-        const updated = userList.map((user) =>
-          user.id === editingId ? { ...user, name, email } : user
-        );
-        setUserList(updated);
-        const index = users.findIndex((u) => u.id === editingId);
-        if (index !== -1) users[index] = { ...users[index], name, email };
-        setName("");
-        setEmail("");
-        setEditingId(null);
-      };
+const Page = () => {
+  const router = useRouter();
+  const [userList, setUserList] = useState<User[]>([]);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const logout = () => {
+    localStorage.removeItem("token");
+    router.push("/");
+  };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== TOKEN) {
+      router.push("/");
+    } else {
+      setUserList([...users]);
+    }
+  }, []);
+
+  const addUser = () => {
+    if (!name || !email) return;
+    const newUser = { id: Date.now(), name, email };
+    setUserList((prev) => [...prev, newUser]);
+    users.push(newUser);
+    setName("");
+    setEmail("");
+  };
+
+  const deleteUser = (id: number) => {
+    const filtered = userList.filter((user) => user.id !== id);
+    setUserList(filtered);
+    const index = users.findIndex((u) => u.id === id);
+    if (index !== -1) users.splice(index, 1);
+  };
+
+  const startEdit = (user: User) => {
+    setEditingId(user.id);
+    setName(user.name);
+    setEmail(user.email);
+  };
+
+  const updateUser = () => {
+    if (!name || !email || editingId === null) return;
+    const updated = userList.map((user) =>
+      user.id === editingId ? { ...user, name, email } : user
+    );
+    setUserList(updated);
+    const index = users.findIndex((u) => u.id === editingId);
+    if (index !== -1) users[index] = { ...users[index], name, email };
+    setName("");
+    setEmail("");
+    setEditingId(null);
+  };
   return (
     <div className="min-h-screen flex flex-col items-center justify-center py-10 bg-black/95 text-white gap-10 w-full">
       <div className="w-[90%]  flex justify-between items-center">
@@ -137,6 +137,6 @@ const page = () => {
       </ul>
     </div>
   );
-}
+};
 
-export default page
+export default Page;
