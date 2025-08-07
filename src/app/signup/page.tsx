@@ -1,8 +1,8 @@
-// === src/pages/signup.tsx ===
+"use client";
+import React from "react";
 import { useState } from "react";
-import { useRouter } from "next/router";
-
-export default function Signup() {
+import { useRouter } from "next/navigation";
+const page = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -24,7 +24,6 @@ export default function Signup() {
     alert("Signup successful");
     router.push("/");
   };
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black/95 gap-10 text-white">
       <h1 className="text-3xl mb-4">Sign Up</h1>
@@ -39,11 +38,13 @@ export default function Signup() {
         placeholder="password"
         onChange={(e) => setPassword(e.target.value)}
       />
-     
+
       <button className="btn" onClick={signup}>
         <span className="btn-text-one">Sign Up</span>
         <span className="btn-text-two">Login !</span>
       </button>
     </div>
   );
-}
+};
+
+export default page;

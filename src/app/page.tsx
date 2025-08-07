@@ -1,8 +1,8 @@
-// === src/pages/index.tsx ===
+"use client";
+import React from "react";
 import { useState } from "react";
-import { useRouter } from "next/router";
-import "tailwindcss";
-export default function Login() {
+import { useRouter } from "next/navigation";
+const page = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -20,11 +20,10 @@ export default function Login() {
       alert("Invalid username or password");
     }
   };
-
   return (
     <div
       className="min-h-screen flex flex-col gap-10
-     items-center justify-center bg-black/95 text-white"
+   items-center justify-center bg-black/95 text-white"
     >
       <h1 className="text-3xl mb-4">Login</h1>
       <input
@@ -52,4 +51,6 @@ export default function Login() {
       </button>
     </div>
   );
-}
+};
+
+export default page;
