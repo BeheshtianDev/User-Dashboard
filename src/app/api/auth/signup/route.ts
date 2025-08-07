@@ -1,17 +1,34 @@
-// === src/pages/api/auth/signup.ts ===
-import { auth } from "@/lib/data";
-import { NextApiRequest, NextApiResponse } from "next";
+import { users } from "@/lib/data";
+import { NextRequest, NextResponse } from "next/server";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") return res.status(405).end();
-  const { username, password } = req.body;
+export async function GET() {
+  return NextResponse.json(users);
+}
 
-  if (!username || !password) {
-    return res.status(400).json({ message: "Missing fields" });
+export async function POST(req: NextRequest) {
+  const { name, email } = await req.json();
+  const id = Date.now();
+  users.push({ id, name, email });
+  return NextResponse.json({ message: "User added" }, { status: 201 });
+}
+
+export async function PUT(req: NextRequest) {
+  const { id, name, email } = await req.json();
+  const user = users.find((u) => u.id === id);
+  if (!user) {
+    return NextResponse.json({ message: "User not found" }, { status: 404 });
   }
-  const exists = auth.find((u) => u.username === username);
-  if (exists) return res.status(400).json({ message: "User exists" });
+  user.name = name;
+  user.email = email;
+  return NextResponse.json({ message: "User updated" });
+}
 
-  auth.push({ username, password });
-  res.status(200).json({ message: "User created" });
+export async function DELETE(req: NextRequest) {
+  const { id } = await req.json();
+  const index = users.findIndex((u) => u.id === id);
+  if (index === -1) {
+    return NextResponse.json({ message: "User not found" }, { status: 404 });
+  }
+  users.splice(index, 1);
+  return NextResponse.json({ message: "User deleted" });
 }

@@ -1,15 +1,26 @@
-// === src/pages/api/auth/login.ts ===
 import { auth, TOKEN } from "@/lib/data";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") return res.status(405).end();
-  const { username, password } = req.body;
+export async function POST(request: NextRequest) {
+  if (request.method !== "POST") {
+    return NextResponse.json(
+      { message: "Method Not Allowed" },
+      { status: 405 }
+    );
+  }
+
+  const body = await request.json();
+  const { username, password } = body;
   const user = auth.find(
     (u) => u.username === username && u.password === password
   );
 
-  if (!user) return res.status(401).json({ message: "Invalid credentials" });
+  if (!user) {
+    return NextResponse.json(
+      { message: "Invalid credentials" },
+      { status: 401 }
+    );
+  }
 
-  res.status(200).json({ token: TOKEN });
+  return NextResponse.json({ token: TOKEN }, { status: 200 });
 }
