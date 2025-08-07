@@ -5,10 +5,6 @@ import { notFound } from "next/navigation";
 import { users } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
 
-interface Props {
-  params: { id: string };
-}
-
 interface Exercise {
   muscle: string;
   movement: string;
@@ -37,7 +33,14 @@ const itemVariants = {
   visible: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: 20, transition: { duration: 0.2 } },
 };
-export default function UserDetailPage({ params }: Props) {
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
+export default function Page({ params }: Props) {
+  const userId = Number(params.id);
   const [trainingPlan, setTrainingPlan] = useState<TrainingDay[]>([
     {
       day: 1,
