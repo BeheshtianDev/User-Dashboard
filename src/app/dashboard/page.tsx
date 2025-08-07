@@ -130,26 +130,26 @@ const DashboardPage = () => {
       >
         <div className="w-full flex gap-5 de:flex-row mo:flex-col">
           <input
-            className="w-full py-3 px-4 bg-black rounded text-white/70 focus:outline-none border border-white/20 focus:border-white/50"
+              className=" z-10 de:w-1/4 mo:w-full py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <input
-            className="w-full py-3 px-4 bg-black rounded text-white/70 focus:outline-none border border-white/20 focus:border-white/50"
+              className=" z-10 de:w-1/4 mo:w-full py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            className="w-full py-3 px-4 bg-black rounded text-white/70 focus:outline-none border border-white/20 focus:border-white/50"
+              className=" z-10 de:w-1/4 mo:w-full py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
             placeholder="Role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           />
 
           <input
-            className="w-full py-3 px-4 bg-black rounded text-white/70 focus:outline-none border border-white/20 focus:border-white/50"
+              className=" z-10 de:w-1/4 mo:w-full py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
             placeholder="Phone"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
@@ -185,7 +185,7 @@ const DashboardPage = () => {
               transition={{ duration: 0.3 }}
               className="flex items-center justify-between bg-black border border-white/20 py-4 px-[4vw] rounded shadow-[0_0_15px_rgba(255,255,255,0.05)]"
             >
-              <div className="justify-between w-2/3  items-center flex">
+              <div className="justify-between de:w-2/3 mo:w-1/3 mo:flex-col de:flex-row  de:items-center mo:items-start flex">
                 <p className="font-semibold text-white">{user.name}</p>
                 <p className="text-sm text-white/60">{user.email}</p>
                 <p className="text-sm text-white/40 italic">

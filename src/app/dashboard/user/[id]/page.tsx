@@ -239,7 +239,7 @@ export default function Page() {
               {day.exercises.map((ex, exIdx) => (
                 <motion.div
                   key={exIdx}
-                  className="grid grid-cols-4 gap-4 mb-2 items-center"
+                  className="flex mo:flex-col de:flex-row w-full gap-4 mb-2 items-center"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
@@ -248,7 +248,7 @@ export default function Page() {
                   {trainingPlanEditMode[dayIdx] ? (
                     <>
                       <input
-                        className="bg-black border border-white/20 p-2 rounded"
+                        className="max-w-[350px] z-10 w-[95%] py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
                         placeholder="Muscle"
                         value={ex.muscle}
                         onChange={(e) =>
@@ -261,7 +261,7 @@ export default function Page() {
                         }
                       />
                       <input
-                        className="bg-black border border-white/20 p-2 rounded"
+                        className="max-w-[350px] z-10 w-[95%] py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
                         placeholder="Movement"
                         value={ex.movement}
                         onChange={(e) =>
@@ -274,16 +274,15 @@ export default function Page() {
                         }
                       />
                       <input
-                        className="bg-black border border-white/20 p-2 rounded"
+                        className="max-w-[350px] z-10 w-[95%] py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
                         placeholder="Sets"
                         value={ex.sets}
                         onChange={(e) =>
                           updateExercise(dayIdx, exIdx, "sets", e.target.value)
                         }
                       />
-                      <div className="flex items-center gap-2">
                         <input
-                          className="bg-black border border-white/20 p-2 rounded w-full"
+                          className="max-w-[350px] z-10 w-[95%] py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
                           placeholder="Reps"
                           value={ex.reps}
                           onChange={(e) =>
@@ -295,6 +294,7 @@ export default function Page() {
                             )
                           }
                         />
+                      <div className="flex w-1/4 items-center justify-center">
                         <button
                           onClick={() => deleteExercise(dayIdx, exIdx)}
                           className="text-red-500 hover:underline"
@@ -366,21 +366,21 @@ export default function Page() {
               </div>
             </div>
             {nutritionEditMode[idx] ? (
-              <div className="grid grid-cols-3 gap-4">
+              <div className="flex de:flex-row mo:flex-col gap-4">
                 <input
-                  className="bg-black border border-white/20 p-2 rounded"
+                  className="max-w-[350px] z-10 w-[95%] py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
                   placeholder="Meal"
                   value={meal.meal}
                   onChange={(e) => updateMeal(idx, "meal", e.target.value)}
                 />
                 <input
-                  className="bg-black border border-white/20 p-2 rounded"
+                  className="max-w-[350px] z-10 w-[95%] py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
                   placeholder="Time"
                   value={meal.time}
                   onChange={(e) => updateMeal(idx, "time", e.target.value)}
                 />
                 <input
-                  className="bg-black border border-white/20 p-2 rounded"
+                  className="max-w-[350px] z-10 w-[95%] py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
                   placeholder="Notes"
                   value={meal.notes}
                   onChange={(e) => updateMeal(idx, "notes", e.target.value)}
@@ -398,7 +398,7 @@ export default function Page() {
       </AnimatePresence>
       <button
         onClick={addMeal}
-        className="mb-10 px-4 py-2 bg-green-600 rounded hover:bg-green-700 transition-colors"
+        className="mb-10 px-4 py-2 block bg-green-600 rounded hover:bg-green-700 transition-colors"
         type="button"
       >
         + Add Meal
