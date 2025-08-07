@@ -29,7 +29,7 @@ const Page = () => {
     } else {
       setUserList([...users]);
     }
-  }, []);
+  }, [router]);
 
   const addUser = () => {
     if (!name || !email) return;

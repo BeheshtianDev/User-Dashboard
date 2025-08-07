@@ -1,5 +1,5 @@
 // === src/pages/api/users.ts ===
-import { users, User } from "@/lib/data";
+import { users } from "@/lib/data";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
