@@ -15,7 +15,8 @@ export default function Signup() {
     }
 
     const users = JSON.parse(localStorage.getItem("users") || "[]");
-    const userExists = users.find((u: any) => u.username === username);
+    type User = { username: string; password: string };
+    const userExists = users.find((u: User) => u.username === username);
 
     if (userExists) {
       setError("User already exists");

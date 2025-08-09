@@ -46,9 +46,6 @@ export default function Page() {
   const params = useParams();
   const userId = Number(params.id);
 
-  const user = users.find((u) => u.id === userId);
-  if (!user) return notFound();
-
   // ✅ Fetch API details for this user
   const {
     data: apiUser,
@@ -89,7 +86,8 @@ export default function Page() {
       }
     }
   }, [storageKey]);
-
+  const user = users.find((u) => u.id === userId);
+  if (!user) return notFound();
   const savePlans = () => {
     if (typeof window === "undefined") return;
     localStorage.setItem(
