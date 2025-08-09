@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+
 const Page = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // <-- new state
   const router = useRouter();
 
   type User = {
@@ -13,6 +14,11 @@ const Page = () => {
   };
 
   const login = () => {
+    if (!username.trim() || !password.trim()) {
+      setErrorMessage("Please enter both username and password");
+      return;
+    }
+
     const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
 
     const user = users.find(
@@ -23,7 +29,7 @@ const Page = () => {
       localStorage.setItem("token", "fake-jwt-token");
       router.push("/dashboard");
     } else {
-      alert("Invalid username or password");
+      setErrorMessage("Invalid username or password");
     }
   };
 
@@ -46,12 +52,17 @@ const Page = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
 
+      {/* Show error message here */}
+      {errorMessage && (
+        <p className="text-red-500 text-sm mt-1 z-10">{errorMessage}</p>
+      )}
+
       <button
         className="btn border border-black/80 hover:!shadow-white/30 hover:!shadow-[0_0_20px_rgba(0,0,0,0.5)] transition-all duration-500 hover:border-white/30"
         onClick={login}
       >
         <span className="btn-text-one">Login</span>
-        <span className="btn-text-two">Dashbaord!</span>
+        <span className="btn-text-two">Dashboard!</span>
       </button>
       <button
         className="mt-2 z-10 relative group"

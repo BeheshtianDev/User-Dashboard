@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { notFound } from "next/navigation";
-import { users } from "@/lib/data";
+import { users } from "@/lib/axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams } from "next/navigation"; // ✅ NEW IMPORT
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 interface Exercise {
   muscle: string;
   movement: string;
@@ -44,6 +46,15 @@ export default function Page() {
   const params = useParams();
   const userId = Number(params.id);
 
+  const user = users.find((u) => u.id === userId);
+  if (!user) return notFound();
+
+  // ✅ Fetch API details for this user
+  const {
+    data: apiUser,
+    error: apiError,
+    isLoading,
+  } = useSWR(`https://jsonplaceholder.typicode.com/users/${userId}`, fetcher);
   const [trainingPlan, setTrainingPlan] = useState<TrainingDay[]>([
     {
       day: 1,
@@ -78,9 +89,6 @@ export default function Page() {
       }
     }
   }, [storageKey]);
-
-  const user = users.find((u) => u.id === userId);
-  if (!user) return notFound();
 
   const savePlans = () => {
     if (typeof window === "undefined") return;
@@ -188,22 +196,33 @@ export default function Page() {
       transition={{ duration: 0.4 }}
     >
       <h1 className="text-3xl font-bold mb-6">User Profile</h1>
-      <motion.div
-        className="space-y-2 bg-white/10 p-6 rounded-lg mb-10"
-        variants={itemVariants}
-      >
-        <p>
-          <span className="text-white/70">Name:</span> {user.name}
-        </p>
-        <p>
-          <span className="text-white/70">Email:</span> {user.email}
-        </p>
-        <p>
-          <span className="text-white/70">Role:</span> {user.role}
-        </p>
-        <p>
-          <span className="text-white/70">Joined:</span> {user.joinedAt}
-        </p>
+      {/* API Data */}
+      <motion.div className="space-y-2 bg-white/10 p-6 rounded-lg mb-10">
+        <h2 className="text-xl font-semibold mb-2">Face API Details</h2>
+        {isLoading && <p className="text-white/50">Loading...</p>}
+        {apiError && <p className="text-red-400">Error loading API data</p>}
+        {apiUser && (
+          <>
+            <p>
+              <span className="text-white/70">Username:</span>{" "}
+              {apiUser.username}
+            </p>
+            <p>
+              <span className="text-white/70">Phone:</span> {apiUser.phone}
+            </p>
+            <p>
+              <span className="text-white/70">Website:</span> {apiUser.website}
+            </p>
+            <p>
+              <span className="text-white/70">Company:</span>{" "}
+              {apiUser.company?.name}
+            </p>
+            <p>
+              <span className="text-white/70">City:</span>{" "}
+              {apiUser.address?.city}
+            </p>
+          </>
+        )}
       </motion.div>
 
       {/* TRAINING PLAN */}
@@ -281,19 +300,14 @@ export default function Page() {
                           updateExercise(dayIdx, exIdx, "sets", e.target.value)
                         }
                       />
-                        <input
-                          className="max-w-[350px] z-10 w-[95%] py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
-                          placeholder="Reps"
-                          value={ex.reps}
-                          onChange={(e) =>
-                            updateExercise(
-                              dayIdx,
-                              exIdx,
-                              "reps",
-                              e.target.value
-                            )
-                          }
-                        />
+                      <input
+                        className="max-w-[350px] z-10 w-[95%] py-3 bg-black rounded hover:px-5 focus:px-5 pl-36 text-white/70 transition-all focus:shadow-white/20 focus-within:shadow-lg focus:shadow-[0_0_20px_rgba(0,0,0,0.5)] duration-500 focus:outline-1 outline-white/30 shadow-black"
+                        placeholder="Reps"
+                        value={ex.reps}
+                        onChange={(e) =>
+                          updateExercise(dayIdx, exIdx, "reps", e.target.value)
+                        }
+                      />
                       <div className="flex w-1/4 items-center justify-center">
                         <button
                           onClick={() => deleteExercise(dayIdx, exIdx)}

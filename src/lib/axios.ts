@@ -1,3 +1,11 @@
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "https://jsonplaceholder.typicode.com",
+});
+export const auth: { username: string; password: string }[] = [];
+
+export const TOKEN = "fake-jwt-token";
 export type User = {
   id: number;
   name: string;
@@ -28,7 +36,4 @@ export const users: User[] = [
     phone: "09361234567",
   },
 ];
-
-export const auth: { username: string; password: string }[] = [];
-
-export const TOKEN = "fake-jwt-token";
+export default api;
