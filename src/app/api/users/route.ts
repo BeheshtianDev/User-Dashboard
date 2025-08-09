@@ -1,4 +1,4 @@
-import { users, User } from "@/lib/data";
+import { users, User } from "@/lib/axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {

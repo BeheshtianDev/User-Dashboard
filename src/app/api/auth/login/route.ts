@@ -1,4 +1,4 @@
-import { auth, TOKEN } from "@/lib/data";
+import { auth, TOKEN } from "@/lib/axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
